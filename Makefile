@@ -139,7 +139,7 @@ checkout: repos/stf_ios_mirrorfeed repos/WebDriverAgent repos/osx_ios_device_tri
 repos/stf-ios-provider/package.json: repos/stf-ios-provider
 
 repos/stf-ios-provider:
-	$(eval REPO=$(shell jq '.repo_stf // "https://github.com/nanoscopic/stf-ios-provider.git"' config.json -j))
+	$(eval REPO=$(shell jq '.repo_stf // "https://github.com/chriiis78/stf-ios-provider.git"' config.json -j))
 	git clone $(REPO) repos/stf-ios-provider --branch master
 
 repos/ios_video_stream:
