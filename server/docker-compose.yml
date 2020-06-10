@@ -17,6 +17,7 @@ services:
       - 80:80
       - 443:443
     depends_on:
+      - doctor
       - app
       - auth
       - storage-plugin-apk
@@ -31,12 +32,19 @@ services:
       - 8080:8080
     volumes:
       - rethinkdb:/data
+  doctor:
+    image: ${STF_IMAGE}
+    environment:
+      - SECRET
+      - RETHINKDB_PORT_28015_TCP
+    command: stf doctor
   app:
     image: ${STF_IMAGE}
     restart: unless-stopped
     environment:
       - RETHINKDB_PORT_28015_TCP
       - SECRET
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     command: >
       node runcli.js app 
       --auth-url https://${HOSTNAME}/auth/mock/
@@ -124,6 +132,8 @@ services:
   storage-plugin-apk:
     image: ${STF_IMAGE}
     restart: unless-stopped
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     command: stf storage-plugin-apk --port 3000 --storage-url http://${PUBLIC_IP}/
     depends_on:
       - storage-temp
@@ -186,4 +196,27 @@ services:
       - migrate
       - rethinkdb
       - triproxy
-
+  android-provider:
+    image: ${STF_IMAGE}
+    restart: unless-stopped
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    command: >
+      stf 
+      provider 
+      --connect-sub tcp://dev-triproxy:7250 
+      --connect-push tcp://dev-triproxy:7270 
+      --storage-url "http://${PUBLIC_IP}/" 
+      --public-ip ${PUBLIC_IP} 
+      --min-port=24500 
+      --max-port=25000 
+      --heartbeat-interval 10000 
+      --adb-host docker.for.mac.localhost
+      --allow-remote
+      --screen-ws-url-pattern "wss://${PUBLIC_IP}/d/${PUBLIC_IP}/<%= serial %>/<%= publicPort %>/" 
+    ports:
+      - "24500-25000:24500-25000"
+    depends_on:
+      - migrate
+      - storage-temp
+      - dev-triproxy
