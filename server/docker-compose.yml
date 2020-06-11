@@ -47,7 +47,7 @@ services:
       - NODE_TLS_REJECT_UNAUTHORIZED=0
     command: >
       node runcli.js app 
-      --auth-url https://${HOSTNAME}/auth/mock/
+      --auth-url https://${HOSTNAME}/auth/ldap/
       --websocket-url wss://${HOSTNAME}/ --port 3000
     volumes:
       - ./runcli.js:/app/runcli.js
@@ -63,7 +63,15 @@ services:
     environment:
       - SECRET
       - RETHINKDB_PORT_28015_TCP
-    command: stf auth-mock --app-url http://${HOSTNAME}/ --port 3000
+    command: >
+      stf auth-ldap 
+      --app-url http://${HOSTNAME}/ 
+      --port 3000 
+      --ldap-url ${LDAP_URL} 
+      --ldap-search-dn ${LDAP_SEARCH_DN} 
+      --ldap-search-field ${LDAP_SEARCH_FIELD} 
+      --ldap-bind-dn ${LDAP_BIND_DN} 
+      --ldap-bind-credentials ${LDAP_BIND_CREDENTIALS}
   processor:
     image: ${STF_IMAGE}
     restart: unless-stopped
