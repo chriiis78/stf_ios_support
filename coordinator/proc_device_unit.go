@@ -14,13 +14,10 @@ func proc_device_ios_unit( o ProcOptions, uuid string, curIP string) {
     }
     
     secure := o.config.FrameServer.Secure
-    var storageUrl string
     var frameServer string
     if secure {
-        storageUrl = "https://%s"
         frameServer = fmt.Sprintf("wss://%s:%d/echo", curIP, o.devd.vidPort)
     } else {
-        storageUrl = "http://%s"
         frameServer = fmt.Sprintf("ws://%s:%d/echo", curIP, o.devd.vidPort)
     }
     
@@ -33,9 +30,9 @@ func proc_device_ios_unit( o ProcOptions, uuid string, curIP string) {
         "--connect-sub"          , fmt.Sprintf("tcp://%s:7250", o.config.Stf.Ip),
         "--public-ip"            , curIP,
         "--wda-port"             , strconv.Itoa( o.devd.wdaPort ),
-        "--storage-url"          , fmt.Sprintf(storageUrl, o.config.Stf.HostName),
-        //"--screen-ws-url-pattern", fmt.Sprintf("wss://%s/frames/%s/%d/x", o.config.Stf.HostName, curIP, o.devd.vidPort),
-        "--screen-ws-url-pattern", frameServer,
+        "--storage-url"          , fmt.Sprintf("https://%s", o.config.Stf.HostName),
+        "--screen-ws-url-pattern", fmt.Sprintf("wss://%s/frames/%s/%d/x", o.config.Stf.HostName, curIP, o.devd.vidPort),
+        //"--screen-ws-url-pattern", frameServer,
         "--vnc-password"         , o.config.Video.VncPassword,
         "--vnc-port"             , strconv.Itoa( vncPort ),
         "--vnc-scale"            , strconv.Itoa( o.config.Video.VncScale ),

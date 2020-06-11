@@ -186,9 +186,15 @@ func check_vpn_status( config *Config, baseProgs *BaseProgs, vpnEventCh chan<- V
         //abs, _ := filepath.Abs( "logs/openvpn.log" )
         //log.Info("current directory: ", wd, ", absolute path: ", abs )
         
-        // TODO: create file if it doesn't exist
-        vpnLog := "logs/openvpn.log"
-        fh, _ := os.Open( vpnLog )
+        vpnLog := config.Log.OpenVPN
+        fh, err := os.Open( vpnLog )
+        if err != nil {
+            log.WithFields( log.Fields{
+                "type": "vpn_open_file",
+                "err": err,
+                "file": vpnLog,
+            } ).Error("Error opening OpenVPN log")
+        }
         scanForLastInterface( bufio.NewScanner( fh ), vpnEventCh )   
         
         curPos, _ := fh.Seek( 0, os.SEEK_END )
@@ -200,8 +206,13 @@ func check_vpn_status( config *Config, baseProgs *BaseProgs, vpnEventCh chan<- V
         
         watcher, err := fsnotify.NewWatcher()
         if err != nil {
-            log.Fatal(err)
+            log.WithFields( log.Fields{
+                "type": "vpn_watch_file",
+                "err": err,
+                "file": vpnLog,
+            } ).Error("Error watching OpenVPN log")
         }
+
         baseProgs.vpnLogWatcher = watcher
         defer watcher.Close()
         
