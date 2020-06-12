@@ -27,7 +27,7 @@ func proc_h264_to_jpeg( o ProcOptions ) {
         "nano",
         "--in", outSpec,
         "--out", inSpec,
-        "--frameSkip", "2",
+        "--frameSkip", "10",
         "--cacheid", udid,
     }
     
