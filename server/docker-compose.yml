@@ -148,12 +148,16 @@ services:
   storage-plugin-image:
     image: ${STF_IMAGE}
     restart: unless-stopped
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     command: stf storage-plugin-image --port 3000 --storage-url http://${PUBLIC_IP}/
     depends_on:
       - storage-temp
   storage-temp:
     build: storage-temp/
     restart: unless-stopped
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     volumes:
       - storage-temp:/app/data
     command: stf storage-temp --port 3000 --save-dir /app/data
@@ -214,7 +218,7 @@ services:
       provider 
       --connect-sub tcp://dev-triproxy:7250 
       --connect-push tcp://dev-triproxy:7270 
-      --storage-url "http://${PUBLIC_IP}/" 
+      --storage-url "https://${PUBLIC_IP}/" 
       --public-ip ${PUBLIC_IP} 
       --min-port=24500 
       --max-port=25000 

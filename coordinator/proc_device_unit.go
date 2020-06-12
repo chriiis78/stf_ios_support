@@ -15,10 +15,13 @@ func proc_device_ios_unit( o ProcOptions, uuid string, curIP string) {
     
     secure := o.config.FrameServer.Secure
     var frameServer string
+    var storageUrl string
     if secure {
         frameServer = fmt.Sprintf("wss://%s:%d/echo", curIP, o.devd.vidPort)
+        storageUrl = "https://%s"
     } else {
         frameServer = fmt.Sprintf("ws://%s:%d/echo", curIP, o.devd.vidPort)
+        storageUrl = "http://%s"
     }
     
     o.args = []string{
@@ -30,7 +33,7 @@ func proc_device_ios_unit( o ProcOptions, uuid string, curIP string) {
         "--connect-sub"          , fmt.Sprintf("tcp://%s:7250", o.config.Stf.Ip),
         "--public-ip"            , curIP,
         "--wda-port"             , strconv.Itoa( o.devd.wdaPort ),
-        "--storage-url"          , fmt.Sprintf("https://%s", o.config.Stf.HostName),
+        "--storage-url"          , fmt.Sprintf(storageUrl, serverHostname),
         "--screen-ws-url-pattern", fmt.Sprintf("wss://%s/frames/%s/%d/x", o.config.Stf.HostName, curIP, o.devd.vidPort),
         //"--screen-ws-url-pattern", frameServer,
         "--vnc-password"         , o.config.Video.VncPassword,
