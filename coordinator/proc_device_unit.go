@@ -33,7 +33,7 @@ func proc_device_ios_unit( o ProcOptions, uuid string, curIP string) {
         "--connect-sub"          , fmt.Sprintf("tcp://%s:7250", o.config.Stf.Ip),
         "--public-ip"            , curIP,
         "--wda-port"             , strconv.Itoa( o.devd.wdaPort ),
-        "--storage-url"          , fmt.Sprintf(storageUrl, serverHostname),
+        "--storage-url"          , fmt.Sprintf(storageUrl, o.config.Stf.HostName),
         "--screen-ws-url-pattern", fmt.Sprintf("wss://%s/frames/%s/%d/x", o.config.Stf.HostName, curIP, o.devd.vidPort),
         //"--screen-ws-url-pattern", frameServer,
         "--vnc-password"         , o.config.Video.VncPassword,
