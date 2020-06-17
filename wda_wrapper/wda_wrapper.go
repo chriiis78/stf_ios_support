@@ -115,7 +115,7 @@ func proc_wdaproxy(
     for {
         ops := []string{
           "-p", strconv.Itoa( wdaPort ),
-          "-q", strconv.Itoa( wdaPort ),
+          "-q", strconv.Itoa( 8100 ),
           "-d",
           "-W", ".",
           "-u", uuid,
