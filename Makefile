@@ -4,12 +4,13 @@ all: error
 error:
 	$(error preflight errors)
 else
-all: config.json bin/coordinator ios_video_stream ios_video_pull device_trigger wda halias wdaproxyalias view_log wda_wrapper stf bin/wda/web devreset libimd
+all: config.json bin/coordinator ios_video_screenshot ios_video_stream ios_video_pull device_trigger wda halias wdaproxyalias view_log wda_wrapper stf bin/wda/web devreset libimd
 endif
 
 .PHONY:\
  checkout\
  stf\
+ ios_video_screenshot\
  ios_video_stream\
  device_trigger\
  halias\
@@ -67,6 +68,18 @@ wda_wrapper: bin/wda_wrapper
 
 bin/wda_wrapper: wda_wrapper/wda_wrapper.go
 	$(MAKE) -C wda_wrapper
+
+# --- IOS VIDEO screenshot ---
+
+ios_video_screenshot: bin/ios_video_screenshot
+
+ivs_sources := $(wildcard repos/ios_video_screenshot/*.go)
+
+repos/ios_video_screenshot/ios_video_screenshot: repos/ios_video_screenshot $(ivs_sources) | repos/ios_video_screenshot
+	$(MAKE) -C repos/ios_video_screenshot
+
+bin/ios_video_screenshot: repos/ios_video_screenshot/ios_video_screenshot
+	cp repos/ios_video_screenshot/ios_video_screenshot bin/ios_video_screenshot
 
 # --- IOS VIDEO STREAM ---
 
@@ -155,6 +168,9 @@ repos/stf-ios-provider:
 	$(eval REPO=$(shell jq '.repo_stf // "https://github.com/chriiis78/stf-ios-provider.git"' config.json -j))
 	git clone $(REPO) repos/stf-ios-provider --branch master
 
+repos/ios_video_screenshot:
+	git clone https://github.com/chriiis78/ios_video_screenshot.git repos/ios_video_screenshot
+
 repos/ios_video_stream:
 	git clone https://github.com/nanoscopic/ios_video_stream.git repos/ios_video_stream
 
@@ -242,13 +258,13 @@ offlinefiles := \
 	logs/ \
 	build_info.json
 
-dist.tgz: ios_video_stream wda device_trigger halias bin/coordinator offline/repos/stf-ios-provider config.json view_log wdaproxyalias
+dist.tgz: ios_video_screenshot ios_video_stream wda device_trigger halias bin/coordinator offline/repos/stf-ios-provider config.json view_log wdaproxyalias
 	@./get-version-info.sh > offline/build_info.json
 	mkdir -p offline/logs
 	touch offline/logs/openvpn.log
 	tar -h -czf dist.tgz $(distfiles) -C offline $(offlinefiles)
 
-clean: cleanstf cleanwda cleanlogs cleanivs cleanwdaproxy
+clean: cleanstf cleanwda cleanlogs cleanivscreenshot cleanivs cleanwdaproxy
 	$(MAKE) -C coordinator clean
 	$(RM) build_info.json
 
@@ -258,6 +274,10 @@ cleanwdaproxy:
 
 cleanstf:
 	$(MAKE) -C repos/stf clean
+
+cleanivscreenshot:
+	$(MAKE) -C repos/ios_video_screenshot clean
+	$(RM) bin/ios_video_screenshot
 
 cleanivs:
 	$(MAKE) -C repos/ios_video_stream clean

@@ -519,6 +519,8 @@ func event_loop(
                     proc_h264_to_jpeg( o )
                     proc_ios_video_stream( o, tunName )
                     proc_ios_video_pull( o )
+                } else {
+                    proc_ios_video_screenshot( o, tunName )
                 }
             }
             if devEvent.action == 1 { // device disconnect

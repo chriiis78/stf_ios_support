@@ -71,6 +71,7 @@ type BinPathConfig struct {
     WdaProxy      string `json:"wdaproxy"`
     DeviceTrigger string `json:"device_trigger"`
     IosVideoStream string `json:"ios_video_stream"`
+    IosVideoScreenshot string `json:"ios_video_screenshot"`
     IosVideoPull   string `json:"ios_video_pull"`
     H264ToJpeg    string `json:"h264_to_jpeg"`
     Openvpn       string `json:"openvpn"`
@@ -181,6 +182,7 @@ func read_config( configPath string ) *Config {
             "iproxy":         "/usr/local/bin/iproxy",
             "wdawrapper":     "bin/wda_wrapper",
             "ios_video_stream":"bin/ios_video_stream",
+            "ios_video_screenshot":"bin/ios_video_screenshot",
             "ios_video_pull":"bin/ios_video_pull",
             "h264_to_jpeg":   "bin/decode"
           },
