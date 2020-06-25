@@ -1,0 +1,22 @@
+{
+  "xcode_dev_team_id": "XXXXXXXXXX",
+  "stf": {
+    "ip": "127.0.0.1",
+    "hostname": "127.0.0.1"
+  },
+  "video": {
+    "enabled": true,
+    "use_vnc": false,
+    "vnc_scale": 2,
+    "vnc_password": "",
+    "frame_rate": 10
+  },
+  "install": {
+    "root_path": "./",
+    "config_path": "./config.json"
+  },
+  "network":
+  {
+      "interface": "en0"
+  }
+}
