@@ -4,7 +4,7 @@ all: error
 error:
 	$(error preflight errors)
 else
-all: config.json bin/coordinator ios_video_screenshot ios_video_stream ios_video_pull device_trigger wda halias wdaproxyalias view_log wda_wrapper stf bin/wda/web devreset libimd
+all: config.json bin/coordinator ios_video_screenshot ios_video_stream ios_video_pull device_trigger halias wdaproxyalias view_log wda_wrapper stf bin/wda/web devreset libimd
 endif
 
 .PHONY:\
@@ -172,15 +172,15 @@ repos/ios_video_screenshot:
 	git clone https://github.com/chriiis78/ios_video_screenshot.git repos/ios_video_screenshot
 
 repos/ios_video_stream:
-	git clone https://github.com/nanoscopic/ios_video_stream.git repos/ios_video_stream
+	git clone https://github.com/chriiis78-stf/ios_video_stream.git repos/ios_video_stream
 
 repos/ios_video_pull:
-	git clone https://github.com/nanoscopic/ios_video_pull.git repos/ios_video_pull
+	git clone https://github.com/chriiis78/ios_video_pull.git repos/ios_video_pull
 
 repos/WebDriverAgent/WebDriverAgent.xcodeproj: repos/WebDriverAgent
 
 repos/WebDriverAgent:
-	$(eval REPO=$(shell jq '.repo_wda // "https://github.com/nanoscopic/WebDriverAgent.git"' config.json -j))
+	$(eval REPO=$(shell jq '.repo_wda // "https://github.com/chriiis78/WebDriverAgent.git"' config.json -j))
 	$(eval REPO_BR=$(shell jq '.repo_wda_branch // "master"' config.json -j))
 	git clone $(REPO) repos/WebDriverAgent --branch $(REPO_BR)
 
@@ -191,15 +191,15 @@ repos/h264_to_jpeg/hw_decode.c: repos/h264_to_jpeg
 repos/h264_to_jpeg/tracker.h: repos/h264_to_jpeg
 
 repos/h264_to_jpeg:
-	git clone https://github.com/nanoscopic/h264_to_jpeg.git repos/h264_to_jpeg
+	git clone https://github.com/chriiis78/h264_to_jpeg.git repos/h264_to_jpeg
 
 repos/wdaproxy/main.go: repos/wdaproxy	
 
 repos/wdaproxy:
-	git clone https://github.com/nanoscopic/wdaproxy.git repos/wdaproxy
+	git clone https://github.com/chriiis78/wdaproxy.git repos/wdaproxy
 
 repos/macos_usbdev_reset:
-	git clone https://github.com/nanoscopic/macos_usbdev_reset.git repos/macos_usbdev_reset
+	git clone https://github.com/chriiis78/macos_usbdev_reset.git repos/macos_usbdev_reset
 
 repos/libimobiledevice:
 	git clone https://github.com/libimobiledevice/libimobiledevice.git repos/libimobiledevice
@@ -258,7 +258,7 @@ offlinefiles := \
 	logs/ \
 	build_info.json
 
-dist.tgz: ios_video_screenshot ios_video_stream wda device_trigger halias bin/coordinator offline/repos/stf-ios-provider config.json view_log wdaproxyalias
+dist.tgz: ios_video_screenshot ios_video_stream device_trigger halias bin/coordinator offline/repos/stf-ios-provider config.json view_log wdaproxyalias
 	@./get-version-info.sh > offline/build_info.json
 	mkdir -p offline/logs
 	touch offline/logs/openvpn.log
