@@ -4,7 +4,7 @@ all: error
 error:
 	$(error preflight errors)
 else
-all: config.json bin/coordinator ios_video_screenshot ios_video_stream ios_video_pull device_trigger halias wdaproxyalias view_log wda_wrapper stf bin/wda/web devreset libimd
+all: config.json bin/coordinator ios_video_screenshot ios_video_stream ios_video_pull device_trigger wdadirectory halias wdaproxyalias view_log wda_wrapper stf bin/wda/web devreset libimd
 endif
 
 .PHONY:\
@@ -16,6 +16,7 @@ endif
  halias\
  hbin\
  wda\
+ wdadirectory\
  offline\
  coordinator\
  dist\
@@ -111,6 +112,11 @@ repos/WebDriverAgent/Carthage/Checkouts/RoutingHTTPServer/Info.plist: | repos/We
 	cd repos/WebDriverAgent && ./Scripts/bootstrap.sh
 
 wda: bin/wda/build_info.json
+
+wdadirectory:
+	@if [ -e bin/wda ]; then rm -rf bin/wda; fi;
+	@mkdir -p bin/wda/Debug-iphoneos
+	ln -s ../../repos/wdaproxy/web bin/wda/web
 
 xcodebuildoptions1 := \
 	-scheme WebDriverAgentRunner \
@@ -258,7 +264,7 @@ offlinefiles := \
 	logs/ \
 	build_info.json
 
-dist.tgz: ios_video_screenshot ios_video_stream device_trigger halias bin/coordinator offline/repos/stf-ios-provider config.json view_log wdaproxyalias
+dist.tgz: ios_video_screenshot ios_video_stream wdadirectory device_trigger halias bin/coordinator offline/repos/stf-ios-provider config.json view_log wdaproxyalias
 	@./get-version-info.sh > offline/build_info.json
 	mkdir -p offline/logs
 	touch offline/logs/openvpn.log
