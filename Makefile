@@ -191,7 +191,7 @@ repos/WebDriverAgent:
 	git clone $(REPO) repos/WebDriverAgent --branch $(REPO_BR)
 
 repos/osx_ios_device_trigger:
-	git clone https://github.com/tmobile/osx_ios_device_trigger.git repos/osx_ios_device_trigger
+	git clone https://github.com/chriiis78/osx_ios_device_trigger.git repos/osx_ios_device_trigger
 
 repos/h264_to_jpeg/hw_decode.c: repos/h264_to_jpeg
 repos/h264_to_jpeg/tracker.h: repos/h264_to_jpeg
@@ -208,7 +208,7 @@ repos/macos_usbdev_reset:
 	git clone https://github.com/chriiis78/macos_usbdev_reset.git repos/macos_usbdev_reset
 
 repos/libimobiledevice:
-	git clone https://github.com/libimobiledevice/libimobiledevice.git repos/libimobiledevice
+	git clone https://github.com/chriiis78/libimobiledevice.git repos/libimobiledevice
 
 # --- LibIMobileDevice ---
 
