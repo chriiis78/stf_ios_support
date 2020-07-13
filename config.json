@@ -1,15 +1,22 @@
 {
   "xcode_dev_team_id": "XXXXXXXXXX",
   "stf": {
-    "ip": "127.0.0.1",
-    "hostname": "127.0.0.1"
+    "ip": "192.168.1.77",
+    "hostname": "192.168.1.77"
   },
   "video": {
-    "enabled": true,
+    "enabled": false,
     "use_vnc": false,
     "vnc_scale": 2,
     "vnc_password": "",
     "frame_rate": 10
+  },
+  "frameserver":{
+    "secure": true,
+    "cert": "./server/cert/server.crt",
+    "key": "./server/cert/server.key",
+    "width": 0,
+    "height": 0
   },
   "install": {
     "root_path": "./",
@@ -17,6 +24,6 @@
   },
   "network":
   {
-      "interface": "en0"
+      "interface": "en1"
   }
 }
